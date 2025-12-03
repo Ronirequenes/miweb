@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peaje de Aparcamiento Automático</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Portada -->
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Peaje de Aparcamiento Automático</h1>
+            <p class="sub">Proyecto con Arduino UNO, sensores y automatización</p>
+        </div>
+    </header>
+
+    <!-- Descripción -->
+    <section class="descripcion">
+        <h2>Descripción del Proyecto</h2>
+        <p>
+            Este proyecto implementa un sistema de peaje de aparcamiento automático
+            utilizando un sensor ultrasónico, un servomotor y un Arduino UNO para
+            detectar vehículos y levantar la barrera sin intervención humana.
+        </p>
+    </section>
+
+    <!-- Código -->
+    <section class="codigo">
+        <h2>Código del Proyecto</h2>
+
+<pre><code>
+#include &lt;Servo.h&gt;
+
+Servo barrera;
+
+int trig = 2;
+int echo = 3;
+long duracion;
+int distancia;
+
+void setup() {
+  Serial.begin(9600);
+
+  pinMode(trig, OUTPUT);
+  pinMode(echo, INPUT);
+
+  barrera.attach(4);
+  barrera.write(90);
+}
+
+void loop() {
+
+  digitalWrite(trig, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trig, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trig, LOW);
+
+  duracion = pulseIn(echo, HIGH, 30000);
+  distancia = duracion * 0.0343 / 2;
+
+  Serial.print("Distancia: ");
+  Serial.println(distancia);
+
+  if (distancia > 0 && distancia < 15) {
+    abrirBarrera();
+    delay(10000);
+    cerrarBarrera();
+  }
+
+  delay(200);
+}
+
+void abrirBarrera() {
+  barrera.write(0);
+}
+
+void cerrarBarrera() {
+  barrera.write(90);
+}
+</code></pre>
+    </section>
+
+    <!-- Diagramas -->
+    <section class="imagenes">
+        <h2>Diagramas del Proyecto</h2>
+        <div class="galeria">
+            <img src="img/foto1.jpeg" alt="Diagrama 1">
+            <img src="img/foto2.jpeg" alt="Diagrama 2">
+            <img src="img/foto3.jpeg" alt="Diagrama 3">
+        </div>
+    </section>
+
+    <!-- Video -->
+    <section class="video">
+        <h2>Funcionamiento del Sistema </h2>
+
+        <video controls>
+            <source src="video/funcionamiento2.mp4" type="video/mp4">
+            Tu navegador no soporta video.
+        </video>
+    </section>
+
+    <!-- Descargar Proyecto -->
+    <section class="descargar">
+        <h2>Descargar Proyecto Completo</h2>
+        <a class="btn-descargar" href="downloads/PeajeCodigo.zip" download>
+            Descargar ZIP
+        </a>
+    </section>
+<footer>
+    <h3>Autores</h3>
+    <p>
+        Moises Israel Rosales • 
+        Luis Angel Castilla • 
+        Ronis Alexander Requenes • 
+        Carrion Sebastian Baez
+    </p>
+</footer>
+
+
+</body>
+</html>
